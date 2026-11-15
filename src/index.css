@@ -436,17 +436,14 @@ nav a:hover {
 
 /* HOME PAGE */
 
+/* HOME PAGE */
+
 .home-page {
   min-height: 85vh;
   background: #eaf4ff;
-    #dceeff,
-    #f5e6d3,
-    #e8f4f8
-  );
   padding: 45px 20px;
   text-align: center;
 }
-
 .home-content {
   max-width: 1100px;
   margin: auto;
