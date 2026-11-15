@@ -1,20 +1,16 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-// Get the currently logged-in user's Favorites key
 const getFavoritesKey = () => {
   const user = JSON.parse(
     localStorage.getItem("user") || "null"
   );
 
-  if (!user) {
-    return "favorites_guest";
-  }
-
-  return `favorites_${user.id || user.email}`;
+  return user
+    ? `favorites_${user.id || user.email}`
+    : "favorites_guest";
 };
 
-// Load Favorites for the logged-in user
 const loadFavorites = () => {
   return JSON.parse(
     localStorage.getItem(getFavoritesKey()) || "[]"
@@ -23,10 +19,13 @@ const loadFavorites = () => {
 
 const favoriteSlice = createSlice({
   name: "favorites",
-
   initialState: loadFavorites(),
 
   reducers: {
+    loadUserFavorites: () => {
+      return loadFavorites();
+    },
+
     addFavorite: (state, action) => {
       const exists = state.some(
         (destination) =>
@@ -60,6 +59,7 @@ const favoriteSlice = createSlice({
 });
 
 export const {
+  loadUserFavorites,
   addFavorite,
   removeFavorite
 } = favoriteSlice.actions;

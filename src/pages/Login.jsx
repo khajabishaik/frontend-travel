@@ -1,18 +1,18 @@
+
 import { useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loadUserFavorites } from "../features/favoriteSlice";
 
 function Login() {
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
-
-  const [password, setPassword] =
-    useState("");
+  const [password, setPassword] = useState("");
 
   async function handleSubmit(e) {
-
     e.preventDefault();
 
     const response = await api.get(
@@ -20,51 +20,41 @@ function Login() {
     );
 
     if (response.data.length > 0) {
-
       localStorage.setItem(
         "user",
         JSON.stringify(response.data[0])
       );
 
+      dispatch(loadUserFavorites());
+
       navigate("/");
-      window.location.reload();
-
     } else {
-
       alert("Invalid Credentials");
-
     }
   }
 
   return (
-<div className='auth-container'>
-<div className='auth-card'>
+    <div className="auth-container">
+      <div className="auth-card">
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-    <form onSubmit={handleSubmit}>
+          <input
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-      <input
-        type="email"
-        placeholder="Email"
-        onChange={(e) =>
-          setEmail(e.target.value)
-        }
-      />
-
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) =>
-          setPassword(e.target.value)
-        }
-      />
-
-      <button className='submit-btn'>
-        Login
-      </button>
-
-    </form>
-</div>
-</div>
+          <button className="submit-btn">
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
 
